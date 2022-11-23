@@ -19,3 +19,4 @@ Route::get('/', [HomeController::class,'dashboard']);
 Route::get('/login', [HomeController::class,'login']);
 Route::get('/register', [HomeController::class,'register']);
 Route::post('/register', [UserController::class,'signup'])->name('Register');
+Route::post('/login',[UserController::class,'Login'])->name('login');

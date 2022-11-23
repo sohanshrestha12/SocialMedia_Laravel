@@ -30,6 +30,39 @@ class UserController extends Controller
         ]);
 
         return redirect('/login');
+    }
 
+    public function Login(Request $req){
+        $req->validate([
+            'email'=>'required',
+            'password'=>'required'
+
+        ]);
+
+
+        // $user = User::where('Email','=',$req->email)->get();
+        // if($user->count()>0){
+        //     foreach($user as $item){
+                
+        //         if(Hash::check($req->password,$item->Password)){
+        //             return redirect('/');
+        //         }
+        //         else{
+        //             return back()->with('pmsg','Password is not valid!');
+        //         }
+        //     }
+        // }
+        $user = User::where('Email','=',$req->email)->first();
+        if($user){
+            if(Hash::check($req->password,$user->Password)){
+                return redirect('/');
+            }
+            else{
+                return back()->with('pmsg','Password is not valid!');
+            }
+        }
+        else{
+            return back()->with('emsg','Email is not valid!');
+        }
     }
 }
