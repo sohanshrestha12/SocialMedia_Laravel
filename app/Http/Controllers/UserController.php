@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function signup(Request $req){
+    public function signup(Request $req)
+    {
         // dd($req->all()); //dump and die
         $req->validate([
             'name' => 'required',
-            'email'=>'required|unique:users,Email',
-            'password'=>'required'
+            'email' => 'required|unique:users,Email',
+            'password' => 'required'
         ]);
 
 
@@ -25,44 +27,34 @@ class UserController extends Controller
 
         User::create([
             'Name' => $req->name,
-            'Email' => $req->email,
-            'Password' =>Hash::make($req->password) 
+            'email' => $req->email,
+            'password' => Hash::make($req->password)
         ]);
 
         return redirect('/login');
     }
 
-    public function Login(Request $req){
+    public function Login(Request $req)
+    {
         $req->validate([
-            'email'=>'required',
-            'password'=>'required'
+            'email' => 'required',
+            'password' => 'required'
 
         ]);
-
-
-        // $user = User::where('Email','=',$req->email)->get();
-        // if($user->count()>0){
-        //     foreach($user as $item){
-                
-        //         if(Hash::check($req->password,$item->Password)){
-        //             return redirect('/');
-        //         }
-        //         else{
-        //             return back()->with('pmsg','Password is not valid!');
-        //         }
-        //     }
-        // }
-        $user = User::where('Email','=',$req->email)->first();
-        if($user){
-            if(Hash::check($req->password,$user->Password)){
-                return redirect('/');
-            }
-            else{
-                return back()->with('pmsg','Password is not valid!');
-            }
+        if(Auth::attempt(
+            [
+                'email' => $req->email,
+                'password' => $req->password
+            ]
+        )){
+            return redirect('/');
+        }else{
+            return back()->with('msg','login Failed');
         }
-        else{
-            return back()->with('emsg','Email is not valid!');
-        }
+    }
+    public function Logout()
+    {
+        auth()->logout();
+        return redirect('/login');
     }
 }

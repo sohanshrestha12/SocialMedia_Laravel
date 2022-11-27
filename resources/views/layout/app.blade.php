@@ -25,14 +25,20 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse m-3 mt-0 mb-0" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto justify-content-end" style="width: 100%;">
-                    <li class="nav-item ">
-                        <a class="nav-link active" aria-current="page" href="login">Login</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="register">SignUp</a>
-                    </li>
-                </ul>
+                @auth
+                    {{ auth()->user()->Name }}
+                @endauth
+                @guest
+
+                    <ul class="navbar-nav me-auto justify-content-end" style="width: 100%;">
+                        <li class="nav-item ">
+                            <a class="nav-link active" aria-current="page" href="login">Login</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="register">SignUp</a>
+                        </li>
+                    </ul>
+                @endguest
             </div>
         </div>
     </nav>

@@ -1,10 +1,15 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container"style="height: 90%">
+    <div class="container" style="height: 90%">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-5">
                 <div class="box shadow bg-white p-4">
+                    @if (Session::has('msg'))
+                        <div class="alert alert-danger text-center" role="alert">
+                            {{ Session::get('msg') }}
+                        </div>
+                    @endif
                     <h1 class="text-center mt-3 mb-2">Login</h1>
                     <form class="d-flex flex-column" action="{{ route('login') }}" method="POST">
                         @csrf
@@ -12,9 +17,6 @@
                             <label for="exampleInputEmail1" class="form-label">Email address</label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-                            @if (Session::has('emsg'))
-                                <span style="color: red">{{ Session::get('emsg') }}</span>
-                            @endif
                             @error('email')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -23,9 +25,6 @@
                             <label for="exampleInputPassword1" class="form-label">Password</label>
                             <input type="password" class="form-control @error('email') is-invalid @enderror"
                                 id="exampleInputPassword1" name="password">
-                            @if (Session::has('pmsg'))
-                                <span style="color: red">{{ Session::get('pmsg') }}</span>
-                            @endif
                             @error('password')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
